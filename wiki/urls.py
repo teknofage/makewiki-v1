@@ -1,4 +1,6 @@
 from django.urls import path
+from .views import PageList, PageDetailView
+from . import views
 
 """
   CHALLENGES:
@@ -12,6 +14,6 @@ from django.urls import path
   """
 
 urlpatterns = [
-    # path('REPLACE_ME_WITH_ROOT_ROUTE', REPLACE_ME_WITH_VIEW.as_view(), name='wiki-list-page'),
-    # path('REPLACE_ME_WITH_SLUG', REPLACE_ME_WITH_VIEW.as_view(), name='wiki-details-page'),
+    path('', views.PageList.as_view(), name='wiki-list-page'),
+    path('<str:slug>', views.PageDetailView.as_view(), name='wiki-details-page'),
 ]

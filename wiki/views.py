@@ -11,11 +11,16 @@ class PageList(ListView):
       2. Replace this CHALLENGE text with a descriptive docstring for PageList.
       3. Replace pass below with the code to render a template named `list.html`.
     """
+    """
+    PageList returns a list of all of the Wiki pages 
+    """
     model = Page
+    template_name = 'list.html'
 
-    def get(self, request):
+    def get(self, request, *args):
         """ Returns a list of wiki pages. """
-        pass
+        context = {'pages': Page.objects.all()}
+        return render(request, 'list.html', context)
 
 
 class PageDetailView(DetailView):
@@ -23,7 +28,13 @@ class PageDetailView(DetailView):
     CHALLENGES:
       1. On GET, render a template named `page.html`.
       2. Replace this docstring with a description of what thos accomplishes.
-
+    """
+    def get(self, request, slug):
+        context = {"page": Page.objects.get(slug = slug)
+                   }
+        return render(request, 'page.html', context)
+        
+    """    
     STRETCH CHALLENGES:
       1. Import the PageForm class from forms.py.
           - This ModelForm enables editing of an existing Page object in the database.
@@ -39,7 +50,7 @@ class PageDetailView(DetailView):
 
     def get(self, request, slug):
         """ Returns a specific of wiki page by slug. """
-        pass
+        return HttpResponse (views.article, detail(request, slug=""))
 
     def post(self, request, slug):
         pass
