@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from wiki.models import Page
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -6,33 +6,25 @@ from django.views.generic.detail import DetailView
 
 class PageList(ListView):
     """
-    CHALLENGES:
-      1. On GET, display a homepage that shows all Pages in your wiki.
-      2. Replace this CHALLENGE text with a descriptive docstring for PageList.
-      3. Replace pass below with the code to render a template named `list.html`.
-    """
-    """
     PageList returns a list of all of the Wiki pages 
     """
     model = Page
-    template_name = 'list.html'
 
-    def get(self, request, *args):
+    def get(self, request):
         """ Returns a list of wiki pages. """
-        context = {'pages': Page.objects.all()}
-        return render(request, 'list.html', context)
+        all_pages = Page.objects.all()
+        return render(request, 'wiki/list.html', {'all_pages':all_pages})
 
 
 class PageDetailView(DetailView):
     """
-    CHALLENGES:
-      1. On GET, render a template named `page.html`.
-      2. Replace this docstring with a description of what thos accomplishes.
+    This class based function, or model method, returns an html page based on the slug
     """
     def get(self, request, slug):
-        context = {"page": Page.objects.get(slug = slug)
-                   }
-        return render(request, 'page.html', context)
+        # context = {"page": Page.objects.get(slug = slug)
+        #            }
+        page = get_object_or_404(Page, slug=slug)
+        return render(request, 'wiki/page.html', {'page':page})
         
     """    
     STRETCH CHALLENGES:
@@ -48,9 +40,9 @@ class PageDetailView(DetailView):
     """
     model = Page
 
-    def get(self, request, slug):
-        """ Returns a specific of wiki page by slug. """
-        return HttpResponse (views.article, detail(request, slug=""))
+    # def get(self, request, slug):
+    #     """ Returns a specific of wiki page by slug. """
+    #     return HttpResponse(views.article, detail(request, slug=""))
 
     def post(self, request, slug):
         pass
